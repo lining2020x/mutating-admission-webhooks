@@ -1,0 +1,12 @@
+FROM golang:1.17 as builder
+
+ENV GOPATH=/go
+WORKDIR /go/src/mutating-admission-webhooks
+COPY . .
+RUN make mutating-admission-webhooks
+
+FROM alpine:3
+
+COPY --from=builder /go/src/mutating-admission-webhooks/bin/mutating-admission-webhooks /bin/mutating-admission-webhooks
+
+CMD ["/bin/mutating-admission-webhooks"]

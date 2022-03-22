@@ -1,0 +1,3 @@
+image:
+  repository: 172.16.1.99/tmp/mutating-admission-webhooks
+  tag: {{ IMG_VERSION }}

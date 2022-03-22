@@ -1,0 +1,29 @@
+apiVersion: admissionregistration.k8s.io/v1beta1
+kind: MutatingWebhookConfiguration
+metadata:
+  annotations:
+    cert-manager.io/inject-ca-from: kube-system/mutating-admission-webhooks-serving-cert
+  name: mutating-admission-webhooks
+webhooks:
+- name: mutating-admission-webhooks-service.kube-system.svc
+  failurePolicy: Fail
+  clientConfig:
+    caBundle: Cg==
+    service:
+      name: mutating-admission-webhooks-service
+      namespace: kube-system
+      path: /mutate-pods
+  rules:
+  - operations:
+    - CREATE
+    - UPDATE
+    apiGroups:
+    - ""
+    apiVersions: 
+    - v1
+    resources: 
+    - pods
+  namespaceSelector:
+    matchLabels:
+      mutating-admission-webhooks-injection: enabled
+
